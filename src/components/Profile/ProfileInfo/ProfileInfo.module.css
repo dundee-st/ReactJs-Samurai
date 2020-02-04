@@ -1,0 +1,13 @@
+.profileInfo .image {
+  height: 200px;
+}
+.profileInfo {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.descriptionBlock,
+.conacts {
+  margin-left: 20px;
+}
