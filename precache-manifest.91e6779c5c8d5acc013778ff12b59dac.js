@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "aff64edd9032eee7d0f9c1c090db4f5c",
+    "revision": "409bc12602d770947b0b4afe67871ee2",
     "url": "/ReactJs-Samurai/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ReactJs-Samurai/static/css/4.029ef923.chunk.css"
   },
   {
-    "revision": "3a117a8f5042db08e41e",
-    "url": "/ReactJs-Samurai/static/css/main.b0adf152.chunk.css"
+    "revision": "595ad25e36127803e237",
+    "url": "/ReactJs-Samurai/static/css/main.6dc33610.chunk.css"
   },
   {
     "revision": "99d62fde5c191cf8920c",
@@ -28,15 +28,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ReactJs-Samurai/static/js/4.56211f37.chunk.js"
   },
   {
-    "revision": "3a117a8f5042db08e41e",
-    "url": "/ReactJs-Samurai/static/js/main.f64c2fbb.chunk.js"
+    "revision": "595ad25e36127803e237",
+    "url": "/ReactJs-Samurai/static/js/main.ea9af0ca.chunk.js"
   },
   {
     "revision": "d6503e0dd4e3af718dc4",
     "url": "/ReactJs-Samurai/static/js/runtime-main.f06ba965.js"
   },
   {
-    "revision": "4cb635a9cd9012974ca4a58a8b7ee344",
-    "url": "/ReactJs-Samurai/static/media/Spinner-1s-200px.4cb635a9.svg"
+    "revision": "72d99cf9887c175a08e016abd9d51f1a",
+    "url": "/ReactJs-Samurai/static/media/Spinner-1s-200px.72d99cf9.svg"
   }
 ]);
