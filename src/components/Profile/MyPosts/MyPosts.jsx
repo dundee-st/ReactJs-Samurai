@@ -8,7 +8,6 @@ import { TextArea } from '../../common/FormsControls/FormsControls';
 
 const MyPosts = React.memo(props => {
     // let postData = props.myPosts;
-    console.log("RENDER!!!");
     let postsElements = props.myPosts.map(element => (
         <Post
             message={element.message}

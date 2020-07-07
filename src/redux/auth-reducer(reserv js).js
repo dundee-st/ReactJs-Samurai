@@ -1,14 +1,16 @@
-import { authAPI } from "../api/api";
+import { authAPI, securityAPI } from "../api/api";
 import { stopSubmit } from 'redux-form';
-const SET_USER_DATA = 'SET_USER_DATA';
 
+const SET_USER_DATA = 'SET_USER_DATA';
+const GET_CAPTCHA_URL_SUCCESS = 'GET_CAPTCHA_URL_SUCCESS';
 
 let initialState = {
     userId: null,
     email: null,
     login: null,
     isFetching: true,
-    isAuth: false
+    isAuth: false,
+    captchaUrl: null  //если ноль, каптча не обязательна
 };
 
 const authReducer = (state = initialState, action) => {
@@ -19,7 +21,12 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload
-            };
+            }
+        case GET_CAPTCHA_URL_SUCCESS:
+            return {
+                ...state,
+                ...action.payload
+            }
         default:
             break;
     }
@@ -28,6 +35,7 @@ const authReducer = (state = initialState, action) => {
 }
 
 export const setUserAuthData = (userId, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { userId, email, login, isAuth } });
+export const getCaptchaUrlSuccess = (captchaUrl) => ({ type: GET_CAPTCHA_URL_SUCCESS, payload: { captchaUrl } });
 
 export const getUserData = () => async (dispatch) => {
 
@@ -39,13 +47,14 @@ export const getUserData = () => async (dispatch) => {
     }
 };
 
-export const logIn = (email, password, rememberMe) => async (dispatch) => {
-
-    let response = await authAPI.login(email, password, rememberMe)
-
+export const logIn = (email, password, rememberMe, captcha) => async (dispatch) => {
+    let response = await authAPI.login(email, password, rememberMe, captcha)
     if (response.data.resultCode === 0) {
         dispatch(getUserData());
     } else {
+        if (response.data.resultCode === 10) {
+            dispatch(getCaptchaUrl());         //диспатчим санку
+        }
         let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
         dispatch(stopSubmit('login', { _error: message }));          //stopSubmit - action из редакс-форм, указываем назване формы, вторым параметром ошибочное поле
     }
@@ -53,12 +62,17 @@ export const logIn = (email, password, rememberMe) => async (dispatch) => {
 };
 
 export const logOut = (email, password, rememberMe) => async (dispatch) => {
-
     let response = await authAPI.logout();
-
-    if (response.data.resultCode === 0) {
+    if (response.resultCode === 0) {
         dispatch(setUserAuthData(null, null, null, false))
     }
+};
+
+
+export const getCaptchaUrl = () => async (dispatch) => {
+    let response = await securityAPI.getCaptchaUrl()
+    const captchaUrl = response.data.url;
+    dispatch(getCaptchaUrlSuccess(captchaUrl));
 };
 
 export default authReducer;

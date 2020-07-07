@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
@@ -22,8 +22,18 @@ const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsCo
 
 class App extends React.Component {
 
+    catchAllUnhandledError = (reason, promise) => {
+        alert('promiseRejectionEvent');
+        // console.log(promiseRejectionEvent)
+    }
     componentDidMount() {
         this.props.initializeApp()        //thunk вызываем
+
+        window.addEventListener('unhandledrejection', this.catchAllUnhandledError);         //обработка всех reject от промисов(всех ошибок промисов)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('unhandledrejection', this.catchAllUnhandledError);
     }
 
     render() {
@@ -35,29 +45,35 @@ class App extends React.Component {
                 <HeaderContainer />
                 <Navbar />
                 <div className='app-wrapper-content'>
-                    {/* <Route path="/dialogs" component={Dialogs} />
-                        <Route path="/profile" component={Profile} /> */}
-                    <Route path='/dialogs' render={withSuspense(DialogsContainer)} />       {/* Обернули комопнент в Suspense в хоке */}
+                    <Switch>
+                        <Route exact path='/' render={() => <Redirect to='/profile' />} />
 
-                    {/* return (
+                        {/* <Route path="/dialogs" component={Dialogs} />
+                        <Route path="/profile" component={Profile} /> */}
+                        <Route path='/dialogs' render={withSuspense(DialogsContainer)} />       {/* Обернули комопнент в Suspense в хоке */}
+
+                        {/* return (
                              <Suspense fallback={<div>Загрузка...</div>}>            
                                  <DialogsContainer />
                              </Suspense>
                          )
                     }} /> */}
-                    <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)} />       {/* Обернули комопнент в Suspense в хоке */}
-                    {/* <Route path='/profile/:userId?' render={() => {
+                        <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)} />       {/* Обернули комопнент в Suspense в хоке */}
+                        {/* <Route path='/profile/:userId?' render={() => {
                         return (
                             <Suspense fallback={<div>Загрузка...</div>}>
                                 <ProfileContainer />
                             </Suspense>
                         )
                     }} /> */}
-                    <Route path='/users' render={() => <UsersContainer />} />
-                    <Route path='/news' component={News} />
-                    <Route path='/music' component={MusicComp} />
-                    <Route path='/settings' component={Settings} />
-                    <Route path='/login' render={() => <Login />} />
+                        <Route path='/users' render={() => <UsersContainer pageTitle='Samurai' />} />
+                        <Route path='/news' component={News} />
+                        <Route path='/music' component={MusicComp} />
+                        <Route path='/settings' component={Settings} />
+                        <Route path='/login' render={() => <Login />} />
+
+                        <Route path='*' render={() => <div>404 NOT FOUND</div>} />
+                    </Switch>
                 </div>
 
                 <footer className='footer'>Footer</footer>
